@@ -1,0 +1,9 @@
+{
+	"id": "reading-progress-desktop",
+	"name": "Reading Progress Desktop",
+	"version": "1.0.0",
+	"description": "A progress bar for article browsing in the status bar.",
+	"author": "qian-shen",
+	"authorUrl": "https://github.com/qian-shen",
+	"isDesktopOnly": true
+}
