@@ -417,7 +417,7 @@ export class ReadingProgress {
 			menu.addItem((item) =>
 				item.setTitle(t("Show current view type")).setIcon("file-type").setChecked(this.showViewType).onClick(() => {
 					this.showViewType = !this.showViewType;
-					this.fs.displayChange(this.showViewType);
+					this.vt.displayChange(this.showViewType);
 					this.plugin.st.showViewType = this.showViewType;
 					this.plugin.saveSettings();
 				}));

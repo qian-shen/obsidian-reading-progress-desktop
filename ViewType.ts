@@ -56,6 +56,9 @@ export class ViewType {
 		});
 		this.statusBarViewTypeEl = this.plugin.addStatusBarItem();
 		this.statusBarViewTypeEl.addClass("view-type");
+		if (!this.plugin.st.showViewType) {
+			this.statusBarViewTypeEl.addClass("hidden");
+		}
 		this.iconSpanEl = this.statusBarViewTypeEl.createEl("span", {
 			cls: "status-bar-item-icon",
 		});
@@ -70,6 +73,18 @@ export class ViewType {
 		setTooltip(this.iconSpanEl, viewType + " " + t("view"), { placement: "top" });
 		setIcon(this.iconSpanEl, "type-" + viewType);
 	};
+
+	displayChange = (show: boolean) => {
+		if (show) {
+			if (this.statusBarViewTypeEl.classList.contains("hidden")) {
+				this.statusBarViewTypeEl.removeClass("hidden");
+			}
+		} else {
+			if (!this.statusBarViewTypeEl.classList.contains("hidden")) {
+				this.statusBarViewTypeEl.addClass("hidden");
+			}
+		}
+	}
 
 	unload = () => {
 		this.iconList.forEach((iconItem) => {

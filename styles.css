@@ -155,6 +155,10 @@ body {
 	order: 2;
 }
 
-.status-bar .status-bar-item.plugin-reading-progress-desktope.view-type {
+.status-bar .status-bar-item.plugin-reading-progress-desktop.view-type {
 	order: 3;
+}
+
+.status-bar .status-bar-item.plugin-reading-progress-desktop.hidden {
+	display: none;
 }
