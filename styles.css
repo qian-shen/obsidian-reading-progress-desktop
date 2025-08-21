@@ -14,8 +14,6 @@ body {
 .theme-light {
 	--reading-progress-background: var(--background-activated-tab-header-light);
 	--reading-progress-box-shadow: var(--shadow-activated-tab-header-light);
-	/* --progress-value-markdown: linear-gradient(to right, #4facfe 0%, #00f2fe 100%);
-	--progress-value-pdf: linear-gradient(to right, #fa709a 0%, #fee140 100%); */
 
 
 }
@@ -23,8 +21,6 @@ body {
 .theme-dark {
 	--reading-progress-background: var(--background-activated-tab-header-dark);
 	--reading-progress-box-shadow: var(--shadow-activated-tab-header-dark);
-	/* --progress-value-markdown: linear-gradient(to right,#005bea 0%, #00c6fb 100%);
-	--progress-value-pdf: linear-gradient(to right, #fa709a 0%, #fee140 100%); */
 }
 
 /* 进度条样式 */
