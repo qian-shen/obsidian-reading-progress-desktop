@@ -1,34 +1,34 @@
+import { Fullscreen } from "Fullscreen";
 import {
 	Plugin,
 	Platform
 } from "obsidian";
 import { ReadingProgress } from "ReadingProgress";
-
-interface ReadingProgressSettings {
-    showFullscreenButton: boolean,
-    showViewType: boolean
-}
-
-const DEFAULT_SETTINGS: ReadingProgressSettings = {
-    showFullscreenButton: true,
-    showViewType: true
-}
+import { DEFAULT_SETTINGS, ReadingProgressSettings, ReadingProgressSettingTab } from "Settings";
+import { ViewType } from "ViewType";
 
 export default class ReadingProgressStatusBarPlugin extends Plugin {
 	rp: ReadingProgress;
+	fs: Fullscreen;
+	vt: ViewType;
 	st: ReadingProgressSettings;
 	async onload() {
 		if (!Platform.isDesktopApp) {
 			return;
 		}
 
-		await this.loadSettings()
+		await this.loadSettings();
+		this.addSettingTab(new ReadingProgressSettingTab(this.app, this));
 
 		this.rp = new ReadingProgress(this);
+		this.fs = new Fullscreen(this);
+		this.vt = new ViewType(this);
+
 		this.rp.initReadingProgress();
+		this.fs.initFullscreen();
+		this.vt.initViewType();
 	}
 
-	
 	// 加载配置的方法
     async loadSettings() {
         this.st = Object.assign({}, DEFAULT_SETTINGS, await this.loadData());

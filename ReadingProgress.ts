@@ -1,16 +1,12 @@
 import ReadingProgressStatusBarPlugin from "main";
-import { ViewType } from "ViewType";
-import { Fullscreen } from "Fullscreen";
 import {
 	MarkdownView,
-	Menu,
 	View,
 	WorkspaceLeaf,
 	WorkspaceSplit,
 	WorkspaceTabs,
 	debounce,
 } from "obsidian";
-import { t } from "translations/helper";
 
 interface ContainerItem {
 	container?: HTMLElement;
@@ -35,9 +31,7 @@ type PatchedWorkspaceSplit = WorkspaceSplit & {
 
 export class ReadingProgress {
 	plugin: ReadingProgressStatusBarPlugin;
-	private readingProgress: HTMLElement;
 	private progressValue: HTMLElement;
-	private progressBorder: HTMLElement;
 	private scrollingContainer: HTMLElement;
 	private scrollContainerChange: boolean;
 	private debouncedScrollChange: () => void;
@@ -54,27 +48,26 @@ export class ReadingProgress {
 		"smm"
 	];
 	statusBarReadingProgressEl: HTMLElement;
-	fs: Fullscreen;
-	vt: ViewType;
-	showFullscreenButton: boolean;
-	showViewType: boolean;
+	readingProgress: HTMLElement;
+	progressBorder: HTMLElement;
 
 	constructor(plugin: ReadingProgressStatusBarPlugin) {
 		this.plugin = plugin;
 		this.statusBarReadingProgressEl = this.plugin.addStatusBarItem();
 		this.statusBarReadingProgressEl.addClass("reading-progress-bar");
 		this.readingProgress = createDiv({ cls: "reading-progress" });
+		this.readingProgress.style.width = this.plugin.st.readingProgressLength + "px";
 		this.progressValue = createDiv({ cls: "progress-value" });
 		this.progressBorder = createDiv({ cls: "progress-border" });
+		this.progressBorder.style.width = this.plugin.st.progressBorderLength + "px";
 		this.readingProgress.appendChild(this.progressValue);
 		this.statusBarReadingProgressEl.appendChild(this.progressBorder);
 		this.statusBarReadingProgressEl.appendChild(this.readingProgress);
 		this.ContainerItemArray = [];
 		this.scrollContainerChange = false;
-		this.fs = new Fullscreen(this.plugin);
-		this.vt = new ViewType(this.plugin);
-		this.showFullscreenButton = this.plugin.st.showFullscreenButton;
-		this.showViewType = this.plugin.st.showViewType;
+		if (this.plugin.st.enableShineFlow) {
+			this.progressValue.addClass("shineFlow");
+		}
 	}
 
 	getActiveViewContainer = (): ContainerItem[] => {
@@ -235,6 +228,30 @@ export class ReadingProgress {
 				}
 			};
 
+			const changeScrollContainer = () => {
+				if (this.scrollContainerChange) {
+					if (scrollContainer.container) {
+						this.scrollContainerChange = false;
+						if (
+							scrollContainer.container !==
+							this.scrollingContainer
+						) {
+							this.progressValue.removeClass(
+								...this.viewTypeList
+							);
+							this.progressValue.addClass(
+								scrollContainer.viewType
+							);
+							this.plugin.vt.updateViewType(
+								scrollContainer.viewType
+							);
+							this.scrollingContainer =
+								scrollContainer.container;
+						}
+					}
+				}
+			}
+
 			let ticking = false;
 			const requestUpdate = () => {
 				if (!ticking) {
@@ -269,34 +286,14 @@ export class ReadingProgress {
 						this.progressValue.style.width = "100%";
 					}
 					this.scrollContainerChange = true;
-					this.vt.updateViewType(scrollContainer.viewType);
+					this.plugin.vt.updateViewType(scrollContainer.viewType);
 				})
 
 			};
 
 			const wheelUpdate = () => {
 				requestAnimationFrame(() => {
-					if (this.scrollContainerChange) {
-						if (scrollContainer.container) {
-							this.scrollContainerChange = false;
-							if (
-								scrollContainer.container !==
-								this.scrollingContainer
-							) {
-								this.progressValue.removeClass(
-									...this.viewTypeList
-								);
-								this.progressValue.addClass(
-									scrollContainer.viewType
-								);
-								this.vt.updateViewType(
-									scrollContainer.viewType
-								);
-								this.scrollingContainer =
-									scrollContainer.container;
-							}
-						}
-					}
+					changeScrollContainer();
 				});
 			};
 
@@ -397,34 +394,7 @@ export class ReadingProgress {
 		}
 	};
 
-	initReadingProgress = () => {
-		this.fs.initFullscreen();
-		this.vt.initViewType();
-
-		this.statusBarReadingProgressEl.addEventListener("contextmenu", (evt) => {
-			evt.preventDefault(); // 防止系统默认菜单
-			const menu = new Menu();
-			menu.addItem((item) =>
-				item.setTitle(t("Show fullscreen button")).setIcon("maximize").setChecked(this.showFullscreenButton).onClick(() => {
-					this.showFullscreenButton = !this.showFullscreenButton;
-					this.fs.displayChange(this.showFullscreenButton);
-					this.plugin.st.showFullscreenButton = this.showFullscreenButton;
-					this.plugin.saveSettings();
-				}));
-
-			menu.addSeparator();
-
-			menu.addItem((item) =>
-				item.setTitle(t("Show current view type")).setIcon("file-type").setChecked(this.showViewType).onClick(() => {
-					this.showViewType = !this.showViewType;
-					this.vt.displayChange(this.showViewType);
-					this.plugin.st.showViewType = this.showViewType;
-					this.plugin.saveSettings();
-				}));
-
-			menu.showAtMouseEvent(evt);
-		})
-		// 防抖函数初始化（100ms）
+	initReadingProgress = () => {// 防抖函数初始化（100ms）
 		this.debouncedScrollChange = debounce(() => {
 			this.scrollChange();
 		}, 100);
@@ -445,6 +415,18 @@ export class ReadingProgress {
 			this.plugin.app.workspace.on("resize", this.debouncedScrollChange)
 		);
 	};
+
+	toggleReadingProgressShineFlow = (enable: boolean) => {
+		if (enable) {
+			if (!this.progressValue.classList.contains("shineFlow")) {
+				this.progressValue.addClass("shineFlow");
+			}
+		} else {
+			if (this.progressValue.classList.contains("shineFlow")) {
+				this.progressValue.removeClass("shineFlow");
+			}
+		}
+	}
 
 	clearContainerArray = () => {
 		if (this.ContainerItemArray.length > 0) {
@@ -479,7 +461,5 @@ export class ReadingProgress {
 
 	unload = () => {
 		this.clearContainerArray();
-		this.fs.unload();
-		this.vt.unload();
 	};
 }

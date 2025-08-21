@@ -54,6 +54,11 @@ body {
 	z-index: 99;
 }
 
+.reading-progress,
+.progress-border {
+	transition: width 0.1s ease;
+}
+
 /* 注册进度条颜色 */
 
 @property --progress-value-color1 {
@@ -68,6 +73,17 @@ body {
   initial-value: #00f2fe;
 }
 
+/* 流光动画 */
+
+@keyframes shineFlow {
+    0% {
+        background-position: 100% 0;
+    }
+    100% {
+        background-position: -100% 0;
+    }
+}
+
 /* 进度条样式 */
 
 .progress-value {
@@ -80,44 +96,65 @@ body {
 	transition: width 0.1s ease, opacity 0.18s ease, --progress-value-color1 0.18s ease, --progress-value-color2 0.18s ease;
 }
 
-.theme-dark .progress-value {
+.progress-value.shineFlow {
+	background-image: linear-gradient(
+        to right,
+        var(--progress-value-color1),
+        var(--progress-value-color2),
+        var(--progress-value-color1)
+    );
+	background-size: 200% 100%;
+    animation: shineFlow 5s linear infinite;
+}
+
+.theme-dark .progress-value,
+.theme-dark .progress-value.shineFlow {
 	--progress-value-color1:#005bea;
 	--progress-value-color2: #00c6fb;
 }
 
 .theme-light .progress-value.markdown,
-.theme-light .progress-value.search {
+.theme-light .progress-value.search,
+.theme-light .progress-value.markdown.shineFlow,
+.theme-light .progress-value.search.shineFlow {
 	--progress-value-color1:#4facfe;
 	--progress-value-color2: #00f2fe;
 }
 
 .theme-dark .progress-value.markdown,
-.theme-dark .progress-value.search {
+.theme-dark .progress-value.search,
+.theme-dark .progress-value.markdown.shineFlow,
+.theme-dark .progress-value.search.shineFlow {
 	--progress-value-color1:#005bea;
 	--progress-value-color2: #00c6fb;
 }
 
-.theme-light .progress-value.pdf {
+.theme-light .progress-value.pdf,
+.theme-light .progress-value.pdf.shineFlow {
 	--progress-value-color1:#fa709a;
 	--progress-value-color2: #fee140;
 }
 
-.theme-dark .progress-value.pdf {
+.theme-dark .progress-value.pdf,
+.theme-dark .progress-value.pdf.shineFlow {
 	--progress-value-color1:#fe5196;
 	--progress-value-color2: #f77062;
 }
 
-.theme-light .progress-value.bases {
+.theme-light .progress-value.bases,
+.theme-light .progress-value.bases.shineFlow {
 	--progress-value-color1: #6f86d6;
 	--progress-value-color2: #48c6ef;
 }
 
-.theme-dark .progress-value.bases {
+.theme-dark .progress-value.bases,
+.theme-dark .progress-value.bases.shineFlow {
 	--progress-value-color1:#6a11cb;
 	--progress-value-color2: #2575fc;
 }
 
-.progress-value.thino_view {
+.progress-value.thino_view,
+.progress-value.thino_view.shineFlow {
 	--progress-value-color1:#43d3ff;
 	--progress-value-color2: #baaaff;
 }

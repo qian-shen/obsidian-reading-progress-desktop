@@ -1,1 +1,4 @@
-# obsidian-reading-progress-desktop
+### 中文 | [English](./README.md)
+
+# obsidian-reading-progress-desktop 插件
+
