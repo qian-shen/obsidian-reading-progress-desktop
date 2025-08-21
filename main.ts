@@ -1,11 +1,11 @@
-import { Fullscreen } from "Fullscreen";
+import { Fullscreen } from "components/Fullscreen";
 import {
 	Plugin,
 	Platform
 } from "obsidian";
-import { ReadingProgress } from "ReadingProgress";
-import { DEFAULT_SETTINGS, ReadingProgressSettings, ReadingProgressSettingTab } from "Settings";
-import { ViewType } from "ViewType";
+import { ReadingProgress } from "components/ReadingProgress";
+import { DEFAULT_SETTINGS, ReadingProgressSettings, ReadingProgressSettingTab } from "settings/Settings";
+import { ViewType } from "components/ViewType";
 
 export default class ReadingProgressStatusBarPlugin extends Plugin {
 	rp: ReadingProgress;
