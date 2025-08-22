@@ -46,8 +46,46 @@ body {
 	border-bottom-left-radius: 5px;
 	border-top-right-radius: 5px;
 	border-bottom-right-radius: 5px;
-	border: 2px solid transparent;
+	border-width: 2px;
+	border-style: solid;
+	border-color: var(--progress-value-color1);
+	opacity: 0;
+	transition: opacity 0.18s ease;
 	z-index: 99;
+}
+
+.progress-border.active {
+	opacity: 1;
+}
+
+.progress-border.active + .reading-progress .progress-value {
+	opacity: 0;
+}
+
+.vertical-tab-content.reading-progress-desktop-setting {
+	container-type: normal !important;
+}
+
+.vertical-tab-content.reading-progress-desktop-setting .setting-item input[type='range'] {
+	width: 150px;
+	z-index: 100;
+}
+
+.reading-progress-desktop-background {
+	position: fixed;
+	width: 100vw;
+	height: 100vh;
+	top: 0;
+	left: 0;
+	opacity: 0;
+	background-color: rgba(0, 0, 0, 0.8);
+	z-index: 99;
+	pointer-events: none;
+	transition: opacity 0.18s ease;
+}
+
+.reading-progress-desktop-background.active {
+	opacity: 1;
 }
 
 .reading-progress,
@@ -194,4 +232,8 @@ body {
 
 .status-bar .status-bar-item.plugin-reading-progress-desktop.hidden {
 	display: none;
+}
+
+.app-container .status-bar.highlight {
+	z-index: calc(var(--layer-modal) + 1);
 }

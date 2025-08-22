@@ -50,6 +50,7 @@ export class ReadingProgress {
 	statusBarReadingProgressEl: HTMLElement;
 	readingProgress: HTMLElement;
 	progressBorder: HTMLElement;
+	// progressBackground: HTMLElement;
 
 	constructor(plugin: ReadingProgressStatusBarPlugin) {
 		this.plugin = plugin;
@@ -59,8 +60,10 @@ export class ReadingProgress {
 		this.readingProgress.style.width = this.plugin.st.readingProgressLength + "px";
 		this.progressValue = createDiv({ cls: "progress-value" });
 		this.progressBorder = createDiv({ cls: "progress-border" });
+		// this.progressBackground = createDiv({ cls: "progress-background" });
 		this.progressBorder.style.width = this.plugin.st.progressBorderLength + "px";
 		this.readingProgress.appendChild(this.progressValue);
+		// this.statusBarReadingProgressEl.appendChild(this.progressBackground);
 		this.statusBarReadingProgressEl.appendChild(this.progressBorder);
 		this.statusBarReadingProgressEl.appendChild(this.readingProgress);
 		this.ContainerItemArray = [];

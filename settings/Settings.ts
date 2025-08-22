@@ -30,10 +30,11 @@ export class ReadingProgressSettingTab extends PluginSettingTab {
 
     display = () => {
         const { containerEl } = this;
-
         containerEl.empty();
 
         containerEl.addClass("reading-progress-desktop-setting");
+        
+        const readingProgressBackground = containerEl.createEl("div", { cls: "reading-progress-desktop-background" });
 
         containerEl.createEl("h2", { cls: "reading-progress-desktop-title" }).innerText = t("Progress bar");
 
@@ -75,6 +76,31 @@ export class ReadingProgressSettingTab extends PluginSettingTab {
                         this.plugin.st.progressBorderLength = actualValue;
                         await this.plugin.saveSettings();
                     }, 300); // 300ms防抖
+                });
+
+                slider.sliderEl.addEventListener("mousedown", (e) => {
+                    const statusBar = document.querySelector(".app-container .status-bar") as HTMLElement;
+                    if (statusBar) {
+                        statusBar.addClass("highlight");
+                    }
+                    if (readingProgressBackground) {
+                        readingProgressBackground.addClass("active")
+                    }
+                    this.plugin.rp.progressBorder.addClass("active");
+
+                    const onMouseUp = () => {
+                        // 释放逻辑
+                        if (readingProgressBackground) {
+                            readingProgressBackground.removeClass("active")
+                        }
+                        if (readingProgressBackground) {
+                            readingProgressBackground.removeClass("active")
+                        }
+                        this.plugin.rp.progressBorder.removeClass("active");
+                        document.removeEventListener("mouseup", onMouseUp);
+                    };
+
+                    document.addEventListener("mouseup", onMouseUp);
                 });
 
 
