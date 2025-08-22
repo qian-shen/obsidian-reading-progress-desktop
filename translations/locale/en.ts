@@ -14,6 +14,6 @@ export default {
     "Restore default length": "Restore default length",
     "Enable the progress bar flowing light effect": "Enable the progress bar flowing light effect",
     "Enable the progress bar flowing light animation": "Enable the progress bar flowing light animation",
-    "Progress bar": "🎮 progress bar",
-    "Components": "🧩 component"
+    "Progress bar": "🎮 Progress bar",
+    "Components": "🧩 Components"
 }
