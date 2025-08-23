@@ -131,7 +131,7 @@ body {
 }
 
 .progress-value.empty {
-	width: 100 !important;
+	width: 100% !important;
 }
 
 .progress-value.shineFlow {
