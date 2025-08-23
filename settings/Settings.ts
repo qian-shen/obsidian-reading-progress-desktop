@@ -36,14 +36,14 @@ export class ReadingProgressSettingTab extends PluginSettingTab {
         
         const readingProgressBackground = containerEl.createEl("div", { cls: "reading-progress-desktop-background" });
 
-        containerEl.createEl("h2", { cls: "reading-progress-desktop-title" }).innerText = t("Progress bar");
+        new Setting(containerEl).setName(t("Progress bar")).setHeading();
 
         new Setting(containerEl)
             .setName(t("Length of progress bar"))
             .setDesc(t("Adjust the length of the progress bar"))
             .addSlider((slider) => {
                 this.slider = slider;
-                let debounceTimer: string | number | NodeJS.Timeout | undefined;
+                let debounceTimer: NodeJS.Timeout;
 
                 slider
                     .setValue(this.plugin.st.readingProgressLength - 122)
@@ -127,7 +127,8 @@ export class ReadingProgressSettingTab extends PluginSettingTab {
                     });
             });
 
-        containerEl.createEl("h2", { cls: "reading-progress-desktop-title" }).innerText = t("Components");
+        // containerEl.createEl("h2", { cls: "reading-progress-desktop-title" }).innerText = t("Components");
+        new Setting(containerEl).setName(t("Components")).setHeading();
 
         new Setting(containerEl)
             .setName(t("Show fullscreen button"))

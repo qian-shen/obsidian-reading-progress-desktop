@@ -130,6 +130,10 @@ body {
 	transition: width 0.1s ease, opacity 0.18s ease, --progress-value-color1 0.18s ease, --progress-value-color2 0.18s ease;
 }
 
+.progress-value.empty {
+	width: 100 !important;
+}
+
 .progress-value.shineFlow {
 	background-image: linear-gradient(
         to right,
