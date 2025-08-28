@@ -153,16 +153,20 @@ body {
 
 .theme-light .progress-value.markdown,
 .theme-light .progress-value.search,
+.theme-light .progress-value.release-notes,
 .theme-light .progress-value.markdown.shineFlow,
-.theme-light .progress-value.search.shineFlow {
+.theme-light .progress-value.search.shineFlow,
+.theme-light .progress-value.release-notes.shineFlow {
 	--progress-value-color1:#4facfe;
 	--progress-value-color2: #00f2fe;
 }
 
 .theme-dark .progress-value.markdown,
 .theme-dark .progress-value.search,
+.theme-dark .progress-value.release-notes,
 .theme-dark .progress-value.markdown.shineFlow,
-.theme-dark .progress-value.search.shineFlow {
+.theme-dark .progress-value.search.shineFlow,
+.theme-dark .progress-value.release-notes.shineFlow {
 	--progress-value-color1:#005bea;
 	--progress-value-color2: #00c6fb;
 }
@@ -201,7 +205,8 @@ body {
 .progress-value.pdf,
 .progress-value.search,
 .progress-value.bases,
-.progress-value.thino_view {
+.progress-value.thino_view,
+.progress-value.release-notes {
 	opacity: 1;
 }
 

@@ -46,7 +46,8 @@ export class ReadingProgress {
 		"canvas",
 		"webviewer",
 		"smm",
-		"empty"
+		"empty",
+		"release-notes"
 	];
 	statusBarReadingProgressEl: HTMLElement;
 	readingProgress: HTMLElement;
@@ -98,6 +99,7 @@ export class ReadingProgress {
 		if (activeViews.length > 0) {
 			activeViews.forEach((activeView) => {
 				const activeViewType = activeView.getViewType();
+				console.log(activeViewType);
 				const containerItem: ContainerItem = {
 					isActive: false,
 					viewType: "empty",
@@ -158,6 +160,13 @@ export class ReadingProgress {
 						containerItem.viewType = "thino_view";
 						break;
 					}
+					case "release-notes":
+						containerItem.container =
+							activeView.containerEl.querySelector(
+								".release-notes-view"
+							) as HTMLElement;
+						containerItem.viewType = "release-notes";
+						break;
 					default:
 						containerItem.container = activeView.containerEl;
 						containerItem.isRecode = false;
