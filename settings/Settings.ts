@@ -34,7 +34,7 @@ export class ReadingProgressSettingTab extends PluginSettingTab {
 
         containerEl.addClass("reading-progress-desktop-setting");
         
-        const readingProgressBackground = containerEl.createEl("div", { cls: "reading-progress-desktop-background" });
+        // const readingProgressBackground = containerEl.createEl("div", { cls: "reading-progress-desktop-background" });
 
         new Setting(containerEl).setName(t("Progress bar")).setHeading();
 
@@ -78,30 +78,30 @@ export class ReadingProgressSettingTab extends PluginSettingTab {
                     }, 300); // 300ms防抖
                 });
 
-                slider.sliderEl.addEventListener("mousedown", (e) => {
-                    const statusBar = document.querySelector(".app-container .status-bar") as HTMLElement;
-                    if (statusBar) {
-                        statusBar.addClass("highlight");
-                    }
-                    if (readingProgressBackground) {
-                        readingProgressBackground.addClass("active")
-                    }
-                    this.plugin.rp.progressBorder.addClass("active");
+                // slider.sliderEl.addEventListener("mousedown", (e) => {
+                //     const statusBar = document.querySelector(".app-container .status-bar") as HTMLElement;
+                //     if (statusBar) {
+                //         statusBar.addClass("highlight");
+                //     }
+                //     if (readingProgressBackground) {
+                //         readingProgressBackground.addClass("active")
+                //     }
+                //     this.plugin.rp.progressBorder.addClass("active");
 
-                    const onMouseUp = () => {
-                        // 释放逻辑
-                        if (readingProgressBackground) {
-                            readingProgressBackground.removeClass("active")
-                        }
-                        if (readingProgressBackground) {
-                            readingProgressBackground.removeClass("active")
-                        }
-                        this.plugin.rp.progressBorder.removeClass("active");
-                        document.removeEventListener("mouseup", onMouseUp);
-                    };
+                //     const onMouseUp = () => {
+                //         // 释放逻辑
+                //         if (readingProgressBackground) {
+                //             readingProgressBackground.removeClass("active")
+                //         }
+                //         if (readingProgressBackground) {
+                //             readingProgressBackground.removeClass("active")
+                //         }
+                //         this.plugin.rp.progressBorder.removeClass("active");
+                //         document.removeEventListener("mouseup", onMouseUp);
+                //     };
 
-                    document.addEventListener("mouseup", onMouseUp);
-                });
+                //     document.addEventListener("mouseup", onMouseUp);
+                // });
 
 
             }).addExtraButton((button) => {
