@@ -99,7 +99,6 @@ export class ReadingProgress {
 		if (activeViews.length > 0) {
 			activeViews.forEach((activeView) => {
 				const activeViewType = activeView.getViewType();
-				console.log(activeViewType);
 				const containerItem: ContainerItem = {
 					isActive: false,
 					viewType: "empty",

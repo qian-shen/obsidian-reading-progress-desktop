@@ -69,12 +69,12 @@ export class ViewType {
 	}
 
 	initViewType = () => {
-		setTooltip(this.iconSpanEl, "empty " + t("view"), { placement: "top" });
+		setTooltip(this.iconSpanEl, "empty " + t("View"), { placement: "top" });
 		setIcon(this.iconSpanEl, "empty");
 	};
 
 	updateViewType = (viewType: string) => {
-		setTooltip(this.iconSpanEl, viewType + " " + t("view"), { placement: "top" });
+		setTooltip(this.iconSpanEl, viewType + " " + t("View"), { placement: "top" });
 		setIcon(this.iconSpanEl, "type-" + viewType);
 	};
 

@@ -9,8 +9,11 @@ If your plugin does not need CSS, delete this file.
 
 body {
 	--reading-progress: var(--scrollbar-active-thumb-bg);
+	--reading-progress-background: hsla(var(--interactive-accent-hsl), 0.15);
+	--reading-progress-box-shadow: inset 0 0 0 1px
+    var(--background-modifier-border);
 }
-
+/* 
 .theme-light {
 	--reading-progress-background: var(--background-activated-tab-header-light);
 	--reading-progress-box-shadow: var(--shadow-activated-tab-header-light);
@@ -19,9 +22,10 @@ body {
 }
 
 .theme-dark {
-	--reading-progress-background: var(--background-activated-tab-header-dark);
-	--reading-progress-box-shadow: var(--shadow-activated-tab-header-dark);
-}
+	--reading-progress-background: hsla(var(--interactive-accent-hsl), 0.15);
+	--reading-progress-box-shadow: inset 0 0 0 1px
+    var(--background-modifier-border);
+} */
 
 /* 进度条样式 */
 
@@ -245,4 +249,12 @@ body {
 
 .app-container .status-bar.highlight {
 	z-index: calc(var(--layer-modal) + 1);
+}
+
+.setting-item.progress-bar-setting.setting-item-heading .setting-item-info .setting-item-name::before {
+	content: "🎮 ";
+}
+
+.setting-item.component-setting.setting-item-heading .setting-item-info .setting-item-name::before {
+	content: "🧩 ";
 }

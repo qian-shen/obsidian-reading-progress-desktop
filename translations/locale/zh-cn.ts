@@ -1,5 +1,5 @@
 export default {
-    "view": "视图",
+    "View": "视图",
     "Enter fullscreen": "进入全屏",
     "Exit fullscreen": "退出全屏",
     "F11 fullscreen mode": "F11 全屏模式",
@@ -10,10 +10,10 @@ export default {
     "Display the page view type in the status bar": "在状态栏显示视图类型",
     "Length of progress bar": "进度条长度",
     "Adjust the length of the progress bar": "调整进度条显示长度",
-    "Settings": "⚙️ 设置",
+    "Settings": "设置",
     "Restore default length": "恢复默认长度",
     "Enable the progress bar flowing light effect": "开启进度条流光效果",
     "Enable the progress bar flowing light animation": "开启进度条流光动画",
-    "Progress bar": "🎮 进度条",
-    "Components": "🧩 组件"
+    "Progress bar": "进度条",
+    "Components": "组件"
 }

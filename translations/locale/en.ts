@@ -1,5 +1,5 @@
 export default {
-    "view": "view",
+    "View": "View",
     "Enter fullscreen": "Enter fullscreen",
     "Exit fullscreen": "Exit fullscreen",
     "F11 fullscreen mode": "F11 fullscreen mode",
@@ -10,10 +10,10 @@ export default {
     "Display the page view type in the status bar": "Display the page view type in the status bar",
     "Length of progress bar": "Length of progress bar",
     "Adjust the length of the progress bar": "Adjust the length of the progress bar",
-    "Settings": "⚙️ Settings",
+    "Settings": "Settings",
     "Restore default length": "Restore default length",
     "Enable the progress bar flowing light effect": "Enable the progress bar flowing light effect",
     "Enable the progress bar flowing light animation": "Enable the progress bar flowing light animation",
-    "Progress bar": "🎮 Progress bar",
-    "Components": "🧩 Components"
+    "Progress bar": "Progress bar",
+    "Components": "Components"
 }

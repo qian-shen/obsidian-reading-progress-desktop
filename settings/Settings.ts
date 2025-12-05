@@ -33,10 +33,8 @@ export class ReadingProgressSettingTab extends PluginSettingTab {
         containerEl.empty();
 
         containerEl.addClass("reading-progress-desktop-setting");
-        
-        // const readingProgressBackground = containerEl.createEl("div", { cls: "reading-progress-desktop-background" });
 
-        new Setting(containerEl).setName(t("Progress bar")).setHeading();
+        new Setting(containerEl).setClass("progress-bar-setting").setName(t("Progress bar")).setHeading();
 
         new Setting(containerEl)
             .setName(t("Length of progress bar"))
@@ -70,39 +68,17 @@ export class ReadingProgressSettingTab extends PluginSettingTab {
                     this.updateProgressBar(value);
 
                     // 设置防抖，避免过于频繁的保存操作
-                    debounceTimer = setTimeout(async () => {
-                        const actualValue = value + 122;
-                        this.plugin.st.readingProgressLength = actualValue;
-                        this.plugin.st.progressBorderLength = actualValue;
-                        await this.plugin.saveSettings();
-                    }, 300); // 300ms防抖
+                    debounceTimer = setTimeout(
+                        () => {
+                            void (async () => {
+                                const actualValue = value + 122;
+                                this.plugin.st.readingProgressLength = actualValue;
+                                this.plugin.st.progressBorderLength = actualValue;
+                                await this.plugin.saveSettings();
+                            }
+                            )();
+                        }, 300); // 300ms防抖
                 });
-
-                // slider.sliderEl.addEventListener("mousedown", (e) => {
-                //     const statusBar = document.querySelector(".app-container .status-bar") as HTMLElement;
-                //     if (statusBar) {
-                //         statusBar.addClass("highlight");
-                //     }
-                //     if (readingProgressBackground) {
-                //         readingProgressBackground.addClass("active")
-                //     }
-                //     this.plugin.rp.progressBorder.addClass("active");
-
-                //     const onMouseUp = () => {
-                //         // 释放逻辑
-                //         if (readingProgressBackground) {
-                //             readingProgressBackground.removeClass("active")
-                //         }
-                //         if (readingProgressBackground) {
-                //             readingProgressBackground.removeClass("active")
-                //         }
-                //         this.plugin.rp.progressBorder.removeClass("active");
-                //         document.removeEventListener("mouseup", onMouseUp);
-                //     };
-
-                //     document.addEventListener("mouseup", onMouseUp);
-                // });
-
 
             }).addExtraButton((button) => {
                 button
@@ -127,8 +103,7 @@ export class ReadingProgressSettingTab extends PluginSettingTab {
                     });
             });
 
-        // containerEl.createEl("h2", { cls: "reading-progress-desktop-title" }).innerText = t("Components");
-        new Setting(containerEl).setName(t("Components")).setHeading();
+        new Setting(containerEl).setClass("component-setting").setName(t("Components")).setHeading();
 
         new Setting(containerEl)
             .setName(t("Show fullscreen button"))
