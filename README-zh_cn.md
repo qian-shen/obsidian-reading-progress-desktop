@@ -1,6 +1,6 @@
 ### 中文 | [English](./README.md)
 
-# obsidian-reading-progress-desktop 插件
+# Reading Progress Desktop 插件
 
 **此插件只适用于桌面端，请勿将其使用在移动端**。
 
@@ -10,7 +10,7 @@
 
 1. 下载 Release 中的最新版本，包括三个文件 `main.js`、`manifest.json`、`styles.css`,
 2. 在 Obsidian 中打开 **设置** => **第三方插件** => **已安装插件** ，右边的文件夹图标中可以直接打开插件的文件夹，
-3. 在插件的文件夹下面新建一个文件夹，命名为：`reading-progress-desktop`，并将第一步的三个文件复制进去，然后在第二步同样的地方找到刷新按钮，点击刷新后即可看到对应的插件，名字为：`Reading Progress Desktop`。
+3. 在插件的文件夹下面新建一个文件夹，命名为：`reading-progress-desktop`，并将第一步的三个文件复制进去，然后在第二步同样的地方找到刷新按钮，点击刷新后即可看到对应的插件，名字为：`Reading progress desktop`。
 
 ## 使用方法
 

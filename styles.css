@@ -13,28 +13,20 @@ body {
 	--reading-progress-box-shadow: inset 0 0 0 1px
     var(--background-modifier-border);
 }
-/* 
-.theme-light {
-	--reading-progress-background: var(--background-activated-tab-header-light);
-	--reading-progress-box-shadow: var(--shadow-activated-tab-header-light);
 
-
+body .app-container .status-bar .status-bar-item.plugin-reading-progress-desktop.reading-progress-bar {
+	--reading-progress-width: 172px;
+	--reading-progress-value: 100%;
 }
-
-.theme-dark {
-	--reading-progress-background: hsla(var(--interactive-accent-hsl), 0.15);
-	--reading-progress-box-shadow: inset 0 0 0 1px
-    var(--background-modifier-border);
-} */
 
 /* 进度条样式 */
 
-.reading-progress {
+body .app-container .status-bar .status-bar-item.plugin-reading-progress-desktop.reading-progress-bar .reading-progress {
 	border-radius: 5px;
 	align-items: center;
 	display: flex;
 	height: 6px;
-	width: 172px;
+	width: var(--reading-progress-width);
 	position: relative;
 	justify-content: flex-start;
 	overflow: hidden;
@@ -42,8 +34,8 @@ body {
 	box-shadow: var(--reading-progress-box-shadow);
 }
 
-.progress-border {
-	width: 172px;
+body .app-container .status-bar .status-bar-item.plugin-reading-progress-desktop.reading-progress-bar .progress-border {
+	width: var(--reading-progress-width);
 	height: 10px;
 	position: absolute;
 	border-top-left-radius: 5px;
@@ -58,42 +50,25 @@ body {
 	z-index: 99;
 }
 
-.progress-border.active {
+body .app-container .status-bar .status-bar-item.plugin-reading-progress-desktop.reading-progress-bar .progress-border.active {
 	opacity: 1;
 }
 
-.progress-border.active + .reading-progress .progress-value {
+body .app-container .status-bar .status-bar-item.plugin-reading-progress-desktop.reading-progress-bar .progress-border.active + .reading-progress .progress-value {
 	opacity: 0;
 }
 
-.vertical-tab-content.reading-progress-desktop-setting {
+body .modal-container .vertical-tab-content.reading-progress-desktop-setting {
 	container-type: normal !important;
 }
 
-.vertical-tab-content.reading-progress-desktop-setting .setting-item input[type='range'] {
+body .modal-container .vertical-tab-content.reading-progress-desktop-setting .setting-item input[type='range'] {
 	width: 150px;
 	z-index: 100;
 }
 
-.reading-progress-desktop-background {
-	position: fixed;
-	width: 100vw;
-	height: 100vh;
-	top: 0;
-	left: 0;
-	opacity: 0;
-	background-color: rgba(0, 0, 0, 0.8);
-	z-index: 99;
-	pointer-events: none;
-	transition: opacity 0.18s ease;
-}
-
-.reading-progress-desktop-background.active {
-	opacity: 1;
-}
-
-.reading-progress,
-.progress-border {
+body .app-container .status-bar .status-bar-item.plugin-reading-progress-desktop.reading-progress-bar .reading-progress,
+body .app-container .status-bar .status-bar-item.plugin-reading-progress-desktop.reading-progress-bar .progress-border {
 	transition: width 0.1s ease;
 }
 
@@ -124,21 +99,21 @@ body {
 
 /* 进度条样式 */
 
-.progress-value {
+body .app-container .status-bar .status-bar-item.plugin-reading-progress-desktop.reading-progress-bar .reading-progress .progress-value {
 	border-radius: 5px;
 	height: 6px;
-	width: 100%;
+	width: var(--reading-progress-value);
 	background-image: linear-gradient(to right, var(--progress-value-color1), var(--progress-value-color2));
 	opacity: 0.3;
 	position: relative;
 	transition: width 0.1s ease, opacity 0.18s ease, --progress-value-color1 0.18s ease, --progress-value-color2 0.18s ease;
 }
 
-.progress-value.empty {
+body .app-container .status-bar .status-bar-item.plugin-reading-progress-desktop.reading-progress-bar .reading-progress .progress-value.empty {
 	width: 100% !important;
 }
 
-.progress-value.shineFlow {
+body .app-container .status-bar .status-bar-item.plugin-reading-progress-desktop.reading-progress-bar .reading-progress .progress-value.shineFlow {
 	background-image: linear-gradient(
         to right,
         var(--progress-value-color1),
@@ -149,81 +124,81 @@ body {
     animation: shineFlow 5s linear infinite;
 }
 
-.theme-dark .progress-value,
-.theme-dark .progress-value.shineFlow {
+body.theme-dark .app-container .status-bar .status-bar-item.plugin-reading-progress-desktop.reading-progress-bar .reading-progress .progress-value,
+body.theme-dark .app-container .status-bar .status-bar-item.plugin-reading-progress-desktop.reading-progress-bar .reading-progress .progress-value.shineFlow {
 	--progress-value-color1:#005bea;
 	--progress-value-color2: #00c6fb;
 }
 
-.theme-light .progress-value.markdown,
-.theme-light .progress-value.search,
-.theme-light .progress-value.release-notes,
-.theme-light .progress-value.markdown.shineFlow,
-.theme-light .progress-value.search.shineFlow,
-.theme-light .progress-value.release-notes.shineFlow {
+body.theme-light .app-container .status-bar .status-bar-item.plugin-reading-progress-desktop.reading-progress-bar .reading-progress .progress-value.markdown,
+body.theme-light .app-container .status-bar .status-bar-item.plugin-reading-progress-desktop.reading-progress-bar .reading-progress .progress-value.search,
+body.theme-light .app-container .status-bar .status-bar-item.plugin-reading-progress-desktop.reading-progress-bar .reading-progress .progress-value.release-notes,
+body.theme-light .app-container .status-bar .status-bar-item.plugin-reading-progress-desktop.reading-progress-bar .reading-progress .progress-value.markdown.shineFlow,
+body.theme-light .app-container .status-bar .status-bar-item.plugin-reading-progress-desktop.reading-progress-bar .reading-progress .progress-value.search.shineFlow,
+body.theme-light .app-container .status-bar .status-bar-item.plugin-reading-progress-desktop.reading-progress-bar .reading-progress .progress-value.release-notes.shineFlow {
 	--progress-value-color1:#4facfe;
 	--progress-value-color2: #00f2fe;
 }
 
-.theme-dark .progress-value.markdown,
-.theme-dark .progress-value.search,
-.theme-dark .progress-value.release-notes,
-.theme-dark .progress-value.markdown.shineFlow,
-.theme-dark .progress-value.search.shineFlow,
-.theme-dark .progress-value.release-notes.shineFlow {
+body.theme-dark .app-container .status-bar .status-bar-item.plugin-reading-progress-desktop.reading-progress-bar .reading-progress .progress-value.markdown,
+body.theme-dark .app-container .status-bar .status-bar-item.plugin-reading-progress-desktop.reading-progress-bar .reading-progress .progress-value.search,
+body.theme-dark .app-container .status-bar .status-bar-item.plugin-reading-progress-desktop.reading-progress-bar .reading-progress .progress-value.release-notes,
+body.theme-dark .app-container .status-bar .status-bar-item.plugin-reading-progress-desktop.reading-progress-bar .reading-progress .progress-value.markdown.shineFlow,
+body.theme-dark .app-container .status-bar .status-bar-item.plugin-reading-progress-desktop.reading-progress-bar .reading-progress .progress-value.search.shineFlow,
+body.theme-dark .app-container .status-bar .status-bar-item.plugin-reading-progress-desktop.reading-progress-bar .reading-progress .progress-value.release-notes.shineFlow {
 	--progress-value-color1:#005bea;
 	--progress-value-color2: #00c6fb;
 }
 
-.theme-light .progress-value.pdf,
-.theme-light .progress-value.pdf.shineFlow {
+body.theme-light .app-container .status-bar .status-bar-item.plugin-reading-progress-desktop.reading-progress-bar .reading-progress .progress-value.pdf,
+body.theme-light .app-container .status-bar .status-bar-item.plugin-reading-progress-desktop.reading-progress-bar .reading-progress .progress-value.pdf.shineFlow {
 	--progress-value-color1:#fa709a;
 	--progress-value-color2: #fee140;
 }
 
-.theme-dark .progress-value.pdf,
-.theme-dark .progress-value.pdf.shineFlow {
+body.theme-dark .app-container .status-bar .status-bar-item.plugin-reading-progress-desktop.reading-progress-bar .reading-progress .progress-value.pdf,
+body.theme-dark .app-container .status-bar .status-bar-item.plugin-reading-progress-desktop.reading-progress-bar .reading-progress .progress-value.pdf.shineFlow {
 	--progress-value-color1:#fe5196;
 	--progress-value-color2: #f77062;
 }
 
-.theme-light .progress-value.bases,
-.theme-light .progress-value.bases.shineFlow {
+body.theme-light .app-container .status-bar .status-bar-item.plugin-reading-progress-desktop.reading-progress-bar .reading-progress .progress-value.bases,
+body.theme-light .app-container .status-bar .status-bar-item.plugin-reading-progress-desktop.reading-progress-bar .reading-progress .progress-value.bases.shineFlow {
 	--progress-value-color1: #6f86d6;
 	--progress-value-color2: #48c6ef;
 }
 
-.theme-dark .progress-value.bases,
-.theme-dark .progress-value.bases.shineFlow {
+body.theme-dark .app-container .status-bar .status-bar-item.plugin-reading-progress-desktop.reading-progress-bar .reading-progress .progress-value.bases,
+body.theme-dark .app-container .status-bar .status-bar-item.plugin-reading-progress-desktop.reading-progress-bar .reading-progress .progress-value.bases.shineFlow {
 	--progress-value-color1:#6a11cb;
 	--progress-value-color2: #2575fc;
 }
 
-.progress-value.thino_view,
-.progress-value.thino_view.shineFlow {
+body .app-container .status-bar .status-bar-item.plugin-reading-progress-desktop.reading-progress-bar .reading-progress .progress-value.thino_view,
+body .app-container .status-bar .status-bar-item.plugin-reading-progress-desktop.reading-progress-bar .reading-progress .progress-value.thino_view.shineFlow {
 	--progress-value-color1:#43d3ff;
 	--progress-value-color2: #baaaff;
 }
 
-.progress-value.markdown,
-.progress-value.pdf,
-.progress-value.search,
-.progress-value.bases,
-.progress-value.thino_view,
-.progress-value.release-notes {
+body .app-container .status-bar .status-bar-item.plugin-reading-progress-desktop.reading-progress-bar .reading-progress .progress-value.markdown,
+body .app-container .status-bar .status-bar-item.plugin-reading-progress-desktop.reading-progress-bar .reading-progress .progress-value.pdf,
+body .app-container .status-bar .status-bar-item.plugin-reading-progress-desktop.reading-progress-bar .reading-progress .progress-value.search,
+body .app-container .status-bar .status-bar-item.plugin-reading-progress-desktop.reading-progress-bar .reading-progress .progress-value.bases,
+body .app-container .status-bar .status-bar-item.plugin-reading-progress-desktop.reading-progress-bar .reading-progress .progress-value.thino_view,
+body .app-container .status-bar .status-bar-item.plugin-reading-progress-desktop.reading-progress-bar .reading-progress .progress-value.release-notes {
 	opacity: 1;
 }
 
 /* 全屏按钮样式 */
 
-.status-bar-item.maximize-minimize:hover,
-.status-bar-item.reading-progress-bar:hover,
-.status-bar-item.view-type:hover {
+body .app-container .status-bar .status-bar-item.plugin-reading-progress-desktop.maximize-minimize:hover,
+body .app-container .status-bar .status-bar-item.plugin-reading-progress-desktop.reading-progress-bar:hover,
+body .app-container .status-bar .status-bar-item.plugin-reading-progress-desktop.view-type:hover {
 	color: var(--status-bar-text-color);
 	background-color: var(--background-modifier-hover);
 }
 
-.status-bar-item.maximize-minimize.ban {
+body .app-container .status-bar .status-bar-item.plugin-reading-progress-desktop.maximize-minimize.ban {
 	color: rgb(232, 17, 35);
 	user-select: none !important;
 	pointer-events: none !important;
@@ -231,30 +206,26 @@ body {
 
 /* 其他样式 */
 
-.status-bar .status-bar-item.plugin-reading-progress-desktop.maximize-minimize {
+body .app-container .status-bar .status-bar-item.plugin-reading-progress-desktop.maximize-minimize {
 	order: 1;
 }
 
-.status-bar .status-bar-item.plugin-reading-progress-desktop.reading-progress-bar {
+body .app-container .status-bar .status-bar-item.plugin-reading-progress-desktop.reading-progress-bar {
 	order: 2;
 }
 
-.status-bar .status-bar-item.plugin-reading-progress-desktop.view-type {
+body .app-container .status-bar .status-bar-item.plugin-reading-progress-desktop.view-type {
 	order: 3;
 }
 
-.status-bar .status-bar-item.plugin-reading-progress-desktop.hidden {
+body .app-container .status-bar .status-bar-item.plugin-reading-progress-desktop.hidden {
 	display: none;
 }
 
-.app-container .status-bar.highlight {
-	z-index: calc(var(--layer-modal) + 1);
-}
-
-.setting-item.progress-bar-setting.setting-item-heading .setting-item-info .setting-item-name::before {
+body .modal-container .vertical-tab-content.reading-progress-desktop-setting .setting-item.progress-bar-setting.setting-item-heading .setting-item-info .setting-item-name::before {
 	content: "🎮 ";
 }
 
-.setting-item.component-setting.setting-item-heading .setting-item-info .setting-item-name::before {
+body .modal-container .vertical-tab-content.reading-progress-desktop-setting .setting-item.component-setting.setting-item-heading .setting-item-info .setting-item-name::before {
 	content: "🧩 ";
 }

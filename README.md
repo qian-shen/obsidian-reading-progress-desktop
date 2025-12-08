@@ -1,6 +1,6 @@
 ### English | [中文](./README-zh_cn.md)
 
-## obsidian-reading-progress-desktop Plugin
+## Reading Progress Desktop Plugin
 
 **This plugin is designed for desktop use only. Please do not use it on mobile devices.**
 
@@ -10,7 +10,7 @@ Once enabled, the plugin will generate three components in the status bar: a ful
 
 1. Download the latest version from the Release, which includes three files: `main.js`, `manifest.json`, and `styles.css`.
 2. In Obsidian, go to **Settings** => **Community plugins** => **Installed plugins**. Click the folder icon on the right to open the plugins folder.
-3. Create a new folder named `reading-progress-desktop` inside the plugins folder. Copy the three files from step one into this folder. Then, click the refresh button in the same section as step two. You should now see the plugin listed as `Reading Progress Desktop`.
+3. Create a new folder named `reading-progress-desktop` inside the plugins folder. Copy the three files from step one into this folder. Then, click the refresh button in the same section as step two. You should now see the plugin listed as `Reading progress desktop`.
 
 ## Usage
 

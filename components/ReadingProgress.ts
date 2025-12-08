@@ -1,5 +1,6 @@
 import ReadingProgressStatusBarPlugin from "main";
 import {
+	Component,
 	MarkdownView,
 	View,
 	WorkspaceLeaf,
@@ -29,13 +30,13 @@ type PatchedWorkspaceSplit = WorkspaceSplit & {
 	children: (WorkspaceSplit | WorkspaceTabs | WorkspaceLeaf)[];
 };
 
-export class ReadingProgress {
+export class ReadingProgress extends Component {
 	plugin: ReadingProgressStatusBarPlugin;
 	private progressValue: HTMLElement;
 	private scrollingContainer: HTMLElement;
 	private scrollContainerChange: boolean;
 	private debouncedScrollChange: () => void;
-	private ContainerItemArray: ContainerItem[];
+	private containerItemArray: ContainerItem[];
 	private viewTypeList: string[] = [
 		"markdown",
 		"pdf",
@@ -54,22 +55,44 @@ export class ReadingProgress {
 	progressBorder: HTMLElement;
 
 	constructor(plugin: ReadingProgressStatusBarPlugin) {
+		super();
 		this.plugin = plugin;
 		this.statusBarReadingProgressEl = this.plugin.addStatusBarItem();
 		this.statusBarReadingProgressEl.addClass("reading-progress-bar");
 		this.readingProgress = createDiv({ cls: "reading-progress" });
-		this.readingProgress.style.width = this.plugin.st.readingProgressLength + "px";
+		this.readingProgress.style.setProperty("--reading-progress-width", this.plugin.st.readingProgressLength + "px");
 		this.progressValue = createDiv({ cls: "progress-value" });
 		this.progressBorder = createDiv({ cls: "progress-border" });
-		this.progressBorder.style.width = this.plugin.st.progressBorderLength + "px";
 		this.readingProgress.appendChild(this.progressValue);
 		this.statusBarReadingProgressEl.appendChild(this.progressBorder);
 		this.statusBarReadingProgressEl.appendChild(this.readingProgress);
-		this.ContainerItemArray = [];
+		this.containerItemArray = [];
 		this.scrollContainerChange = false;
 		if (this.plugin.st.enableShineFlow) {
 			this.progressValue.addClass("shineFlow");
 		}
+	}
+
+	onload(): void {
+		this.debouncedScrollChange = debounce(() => {
+			this.scrollChange();
+		}, 100);
+		this.plugin.app.workspace.onLayoutReady(this.scrollChange);
+		this.plugin.registerEvent(
+			this.plugin.app.workspace.on(
+				"file-open",
+				this.debouncedScrollChange
+			)
+		);
+		this.plugin.registerEvent(
+			this.plugin.app.workspace.on(
+				"active-leaf-change",
+				this.debouncedScrollChange
+			)
+		);
+		this.plugin.registerEvent(
+			this.plugin.app.workspace.on("resize", this.debouncedScrollChange)
+		);
 	}
 
 	getActiveViewContainer = (): ContainerItem[] => {
@@ -104,28 +127,40 @@ export class ReadingProgress {
 					viewType: "empty",
 					isRecode: true,
 				};
+				const unknownViewType = () => {
+					containerItem.container = activeView.containerEl;
+					containerItem.isRecode = false;
+					if (this.viewTypeList.contains(activeViewType)) {
+						containerItem.viewType = activeViewType;
+					} else {
+						containerItem.viewType = "empty";
+					}
+				}
 				switch (activeViewType) {
 					case "markdown": {
-						const markdownView = activeView as MarkdownView;
-						if (
-							markdownView &&
-							markdownView.getMode() == "source"
-						) {
-							containerItem.container =
-								markdownView.containerEl.querySelector(
-									".markdown-source-view .cm-scroller"
-								) as HTMLElement;
-						} else if (
-							markdownView &&
-							markdownView.getMode() == "preview"
-						) {
-							containerItem.container =
-								markdownView.containerEl.querySelector(
-									".markdown-preview-view.markdown-rendered"
-								) as HTMLElement;
+						if (activeView instanceof MarkdownView) {
+							const markdownView = activeView;
+							if (
+								markdownView.getMode() == "source"
+							) {
+								containerItem.container =
+									markdownView.containerEl.querySelector(
+										".markdown-source-view .cm-scroller"
+									) as HTMLElement;
+							} else if (
+								markdownView.getMode() == "preview"
+							) {
+								containerItem.container =
+									markdownView.containerEl.querySelector(
+										".markdown-preview-view.markdown-rendered"
+									) as HTMLElement;
+							}
+							containerItem.viewType = "markdown";
+							break;
+						} else {
+							unknownViewType();
+							break;
 						}
-						containerItem.viewType = "markdown";
-						break;
 					}
 					case "pdf": {
 						containerItem.container =
@@ -167,13 +202,7 @@ export class ReadingProgress {
 						containerItem.viewType = "release-notes";
 						break;
 					default:
-						containerItem.container = activeView.containerEl;
-						containerItem.isRecode = false;
-						if (this.viewTypeList.contains(activeViewType)) {
-							containerItem.viewType = activeViewType;
-						} else {
-							containerItem.viewType = "empty";
-						}
+						unknownViewType();
 						break;
 				}
 				if (isActiveView(activeView) || !workspaceViews.isSplitMode) {
@@ -228,12 +257,11 @@ export class ReadingProgress {
 						return;
 
 					prev = next;
-					this.progressValue.style.width =
-						calcProgress(
-							next.scrollTop,
-							next.clientHeight,
-							next.scrollHeight
-						).toString() + "%";
+					this.progressValue.style.setProperty("--reading-progress-value", calcProgress(
+						next.scrollTop,
+						next.clientHeight,
+						next.scrollHeight
+					).toString() + "%");
 				}
 			};
 
@@ -276,12 +304,11 @@ export class ReadingProgress {
 				requestAnimationFrame(() => {
 					const calcProgressValue = () => {
 						if (scrollContainer.container) {
-							this.progressValue.style.width =
-								calcProgress(
-									scrollContainer.container.scrollTop,
-									scrollContainer.container.clientHeight,
-									scrollContainer.container.scrollHeight
-								).toString() + "%";
+							this.progressValue.style.setProperty("--reading-progress-value", calcProgress(
+								scrollContainer.container.scrollTop,
+								scrollContainer.container.clientHeight,
+								scrollContainer.container.scrollHeight
+							).toString() + "%");
 						}
 					};
 					this.progressValue.removeClass(...this.viewTypeList);
@@ -384,13 +411,13 @@ export class ReadingProgress {
 
 	scrollChange = () => {
 		this.clearContainerArray();
-		this.ContainerItemArray = [];
+		this.containerItemArray = [];
 
 		const scrollContainerArray = this.getActiveViewContainer();
 		if (scrollContainerArray.length > 0) {
 			scrollContainerArray.forEach((scrollContainer) => {
 				this.scrollListener(scrollContainer);
-				this.ContainerItemArray.push(scrollContainer);
+				this.containerItemArray.push(scrollContainer);
 			});
 			this.scrollContainerChange = true;
 		} else {
@@ -398,28 +425,6 @@ export class ReadingProgress {
 			this.progressValue.addClass("empty")
 			this.scrollContainerChange = false;
 		}
-	};
-
-	initReadingProgress = () => {// 防抖函数初始化（100ms）
-		this.debouncedScrollChange = debounce(() => {
-			this.scrollChange();
-		}, 100);
-		this.plugin.app.workspace.onLayoutReady(this.scrollChange);
-		this.plugin.registerEvent(
-			this.plugin.app.workspace.on(
-				"file-open",
-				this.debouncedScrollChange
-			)
-		);
-		this.plugin.registerEvent(
-			this.plugin.app.workspace.on(
-				"active-leaf-change",
-				this.debouncedScrollChange
-			)
-		);
-		this.plugin.registerEvent(
-			this.plugin.app.workspace.on("resize", this.debouncedScrollChange)
-		);
 	};
 
 	toggleReadingProgressShineFlow = (enable: boolean) => {
@@ -435,8 +440,8 @@ export class ReadingProgress {
 	}
 
 	clearContainerArray = () => {
-		if (this.ContainerItemArray.length > 0) {
-			this.ContainerItemArray.forEach((containerItem) => {
+		if (this.containerItemArray.length > 0) {
+			this.containerItemArray.forEach((containerItem) => {
 				if (containerItem.container) {
 					if (containerItem.requestUpdate) {
 						containerItem.container.removeEventListener(
@@ -465,7 +470,8 @@ export class ReadingProgress {
 		}
 	}
 
-	unload = () => {
+	onunload = () => {
+		console.log("调用了ReadingProgress的onunload方法");
 		this.clearContainerArray();
 	};
 }

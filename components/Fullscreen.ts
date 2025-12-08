@@ -1,5 +1,5 @@
-import MyReadingProgressPlugin from "main";
-import { Notice, setIcon, setTooltip, debounce } from "obsidian";
+import ReadingProgressStatusBarPlugin from "main";
+import { Component, Notice, setIcon, setTooltip, debounce } from "obsidian";
 import { t } from "translations/helper";
 
 type FullscreenChangeCallback = (info: {
@@ -8,16 +8,17 @@ type FullscreenChangeCallback = (info: {
 	isF11: boolean;
 }) => void;
 
-export class Fullscreen {
+export class Fullscreen extends Component {
 	private isManual = false;
 	private isTogglingFullscreen = false; // 新增标志位
 	private callbacks: Set<FullscreenChangeCallback> = new Set();
 	private iconSpanEl: HTMLElement;
 	private debouncedFullscreenChange: () => void;
 	statusBarToggleFullscreenButtonEl: HTMLElement;
-	plugin: MyReadingProgressPlugin;
+	plugin: ReadingProgressStatusBarPlugin;
 
-	constructor(plugin: MyReadingProgressPlugin) {
+	constructor(plugin: ReadingProgressStatusBarPlugin) {
+		super();
 		this.plugin = plugin;
 		this.statusBarToggleFullscreenButtonEl = this.plugin.addStatusBarItem();
 		this.statusBarToggleFullscreenButtonEl.addClass("maximize-minimize");
@@ -25,6 +26,46 @@ export class Fullscreen {
 			this.statusBarToggleFullscreenButtonEl.addClass("hidden");
 		}
 		this.iconSpanEl = this.statusBarToggleFullscreenButtonEl.createEl("span", { cls: "status-bar-item-icon" });
+	}
+
+	onload(): void {
+		// 防抖函数初始化（100ms）
+		this.debouncedFullscreenChange = debounce(() => {
+			console.log("调用全屏修改方法");
+			this.handleFullscreenChange();
+		}, 100);
+		if (this.isFullscreen()) {
+			setTooltip(this.iconSpanEl, t("Exit fullscreen"), { placement: "top" });
+			setIcon(this.iconSpanEl, "minimize");
+		} else {
+			setTooltip(this.iconSpanEl, t("Enter fullscreen"), { placement: "top" });
+			setIcon(this.iconSpanEl, "maximize");
+		}
+		this.onChange(({ isFullscreen, isManual, isF11 }) => {
+			if (isManual) {
+				if (isFullscreen) {
+					new Notice(t("Enter fullscreen"));
+					setTooltip(this.iconSpanEl, t("Exit fullscreen"), { placement: "top" });
+					setIcon(this.iconSpanEl, "minimize");
+				} else {
+					new Notice(t("Exit fullscreen"));
+					setTooltip(this.iconSpanEl, t("Enter fullscreen"), { placement: "top" });
+					setIcon(this.iconSpanEl, "maximize");
+				}
+			} else if (isF11) {
+				new Notice(t("F11 fullscreen mode"));
+				setTooltip(this.iconSpanEl, t("Button is unavailable"), { placement: "top" });
+				setIcon(this.iconSpanEl, "ban");
+				this.statusBarToggleFullscreenButtonEl.addClass("ban");
+			} else {
+				new Notice(t("Exit fullscreen"));
+				setTooltip(this.iconSpanEl, t("Enter fullscreen"), { placement: "top" });
+				setIcon(this.iconSpanEl, "maximize");
+				this.statusBarToggleFullscreenButtonEl.removeClass("ban");
+			}
+		});
+		this.statusBarToggleFullscreenButtonEl.addEventListener("click", this.toggleFullscreen);
+		this.plugin.registerDomEvent(document, "fullscreenchange", this.debouncedFullscreenChange);
 	}
 
 	// 请求全屏
@@ -96,45 +137,6 @@ export class Fullscreen {
 		this.callbacks.forEach((cb) => cb(info));
 	}
 
-	initFullscreen = () => {
-		// 防抖函数初始化（100ms）
-		this.debouncedFullscreenChange = debounce(() => {
-			this.handleFullscreenChange();
-		}, 100);
-		if (this.isFullscreen()) {
-			setTooltip(this.iconSpanEl, t("Exit fullscreen"), { placement: "top" });
-			setIcon(this.iconSpanEl, "minimize");
-		} else {
-			setTooltip(this.iconSpanEl, t("Enter fullscreen"), { placement: "top" });
-			setIcon(this.iconSpanEl, "maximize");
-		}
-		this.onChange(({ isFullscreen, isManual, isF11 }) => {
-			if (isManual) {
-				if (isFullscreen) {
-					new Notice(t("Enter fullscreen"));
-					setTooltip(this.iconSpanEl, t("Exit fullscreen"), { placement: "top" });
-					setIcon(this.iconSpanEl, "minimize");
-				} else {
-					new Notice(t("Exit fullscreen"));
-					setTooltip(this.iconSpanEl, t("Enter fullscreen"), { placement: "top" });
-					setIcon(this.iconSpanEl, "maximize");
-				}
-			} else if (isF11) {
-				new Notice(t("F11 fullscreen mode"));
-				setTooltip(this.iconSpanEl, t("Button is unavailable"), { placement: "top" });
-				setIcon(this.iconSpanEl, "ban");
-				this.statusBarToggleFullscreenButtonEl.addClass("ban");
-			} else {
-				new Notice(t("Exit fullscreen"));
-				setTooltip(this.iconSpanEl, t("Enter fullscreen"), { placement: "top" });
-				setIcon(this.iconSpanEl, "maximize");
-				this.statusBarToggleFullscreenButtonEl.removeClass("ban");
-			}
-		});
-		this.statusBarToggleFullscreenButtonEl.addEventListener("click", this.toggleFullscreen);
-		window.addEventListener("fullscreenchange", this.debouncedFullscreenChange);
-	}
-
 	// 绑定 this 的事件处理器
 	private handleFullscreenChange = () => {
 		if (!this.isTogglingFullscreen) {
@@ -163,9 +165,8 @@ export class Fullscreen {
 	}
 
 	// 清理资源
-	unload = () => {
+	onunload = () => {
 		this.statusBarToggleFullscreenButtonEl.removeEventListener("click", this.toggleFullscreen);
-		window.removeEventListener("fullscreenchange", this.debouncedFullscreenChange);
 		this.callbacks.clear();
 	}
 }

@@ -1,7 +1,6 @@
 import { Fullscreen } from "components/Fullscreen";
 import {
-	Plugin,
-	Platform
+	Plugin
 } from "obsidian";
 import { ReadingProgress } from "components/ReadingProgress";
 import { DEFAULT_SETTINGS, ReadingProgressSettings, ReadingProgressSettingTab } from "settings/Settings";
@@ -13,10 +12,6 @@ export default class ReadingProgressStatusBarPlugin extends Plugin {
 	vt: ViewType;
 	st: ReadingProgressSettings;
 	async onload() {
-		if (!Platform.isDesktopApp) {
-			return;
-		}
-
 		await this.loadSettings();
 		this.addSettingTab(new ReadingProgressSettingTab(this.app, this));
 
@@ -24,9 +19,9 @@ export default class ReadingProgressStatusBarPlugin extends Plugin {
 		this.fs = new Fullscreen(this);
 		this.vt = new ViewType(this);
 
-		this.rp.initReadingProgress();
-		this.fs.initFullscreen();
-		this.vt.initViewType();
+		this.addChild(this.rp);
+		this.addChild(this.fs);
+		this.addChild(this.vt);
 	}
 
 	// 加载配置的方法
@@ -39,7 +34,4 @@ export default class ReadingProgressStatusBarPlugin extends Plugin {
         await this.saveData(this.st);
     }
 
-	onunload() {
-		this.rp.unload();
-	}
 }

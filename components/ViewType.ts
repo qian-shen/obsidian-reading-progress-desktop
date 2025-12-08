@@ -1,9 +1,9 @@
-import MyReadingProgressPlugin from "main";
-import { addIcon, removeIcon, setIcon, setTooltip } from "obsidian";
+import ReadingProgressStatusBarPlugin from "main";
+import { Component, addIcon, removeIcon, setIcon, setTooltip } from "obsidian";
 import { t } from "translations/helper";
 
-export class ViewType {
-	plugin: MyReadingProgressPlugin;
+export class ViewType extends Component {
+	plugin: ReadingProgressStatusBarPlugin;
 	private iconSpanEl: HTMLElement;
 	private iconList = [
 		{
@@ -53,7 +53,8 @@ export class ViewType {
 	];
 	statusBarViewTypeEl: HTMLElement;
 
-	constructor(plugin: MyReadingProgressPlugin) {
+	constructor(plugin: ReadingProgressStatusBarPlugin) {
+		super();
 		this.plugin = plugin;
 		this.iconList.forEach((iconItem) => {
 			addIcon("type-" + iconItem.name, iconItem.svg);
@@ -68,10 +69,10 @@ export class ViewType {
 		});
 	}
 
-	initViewType = () => {
+	onload(): void {
 		setTooltip(this.iconSpanEl, "empty " + t("View"), { placement: "top" });
 		setIcon(this.iconSpanEl, "empty");
-	};
+	}
 
 	updateViewType = (viewType: string) => {
 		setTooltip(this.iconSpanEl, viewType + " " + t("View"), { placement: "top" });
@@ -90,7 +91,7 @@ export class ViewType {
 		}
 	}
 
-	unload = () => {
+	onunload = () => {
 		this.iconList.forEach((iconItem) => {
 			removeIcon("type-" + iconItem.name);
 		});

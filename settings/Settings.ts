@@ -6,7 +6,6 @@ export interface ReadingProgressSettings {
     showFullscreenButton: boolean,
     showViewType: boolean,
     readingProgressLength: number,
-    progressBorderLength: number,
     enableShineFlow: boolean
 }
 
@@ -14,7 +13,6 @@ export const DEFAULT_SETTINGS: ReadingProgressSettings = {
     showFullscreenButton: true,
     showViewType: true,
     readingProgressLength: 172,
-    progressBorderLength: 172,
     enableShineFlow: false
 }
 
@@ -41,18 +39,17 @@ export class ReadingProgressSettingTab extends PluginSettingTab {
             .setDesc(t("Adjust the length of the progress bar"))
             .addSlider((slider) => {
                 this.slider = slider;
-                let debounceTimer: NodeJS.Timeout;
+                let debounceTimer: number;
 
                 slider
                     .setValue(this.plugin.st.readingProgressLength - 122)
                     .setLimits(1, 100, 1)
                     .setDynamicTooltip()
                     .onChange(async (value) => {
-                        clearTimeout(debounceTimer);
-                        const actualValue = this.updateProgressBar(value);
+                        activeWindow.clearTimeout(debounceTimer);
+                        const actualValue = this.updateReadingProgress(value);
 
                         this.plugin.st.readingProgressLength = actualValue;
-                        this.plugin.st.progressBorderLength = actualValue;
                         await this.plugin.saveSettings();
                     });
 
@@ -62,18 +59,17 @@ export class ReadingProgressSettingTab extends PluginSettingTab {
                     const value = parseInt(target.value);
 
                     // 清除之前的定时器
-                    clearTimeout(debounceTimer);
+                    activeWindow.clearTimeout(debounceTimer);
 
                     // 立即更新UI
-                    this.updateProgressBar(value);
+                    this.updateReadingProgress(value);
 
                     // 设置防抖，避免过于频繁的保存操作
-                    debounceTimer = setTimeout(
+                    debounceTimer = activeWindow.setTimeout(
                         () => {
                             void (async () => {
                                 const actualValue = value + 122;
                                 this.plugin.st.readingProgressLength = actualValue;
-                                this.plugin.st.progressBorderLength = actualValue;
                                 await this.plugin.saveSettings();
                             }
                             )();
@@ -138,13 +134,10 @@ export class ReadingProgressSettingTab extends PluginSettingTab {
             });
     }
 
-    updateProgressBar = (value: number) => {
+    updateReadingProgress = (value: number) => {
         const actualValue = value + 122;
         if (this.plugin.rp && this.plugin.rp.readingProgress) {
-            this.plugin.rp.readingProgress.style.width = actualValue + "px";
-        }
-        if (this.plugin.rp && this.plugin.rp.progressBorder) {
-            this.plugin.rp.progressBorder.style.width = actualValue + "px";
+            this.plugin.rp.readingProgress.style.setProperty("--reading-progress-width", actualValue + "px");
         }
         return actualValue;
     };
@@ -152,9 +145,8 @@ export class ReadingProgressSettingTab extends PluginSettingTab {
     resetToDefault = async (slider: SliderComponent) => {
         const DEFAULT_VALUE = 50;
         slider.setValue(DEFAULT_VALUE);
-        const actualValue = this.updateProgressBar(DEFAULT_VALUE);
+        const actualValue = this.updateReadingProgress(DEFAULT_VALUE);
         this.plugin.st.readingProgressLength = actualValue;
-        this.plugin.st.progressBorderLength = actualValue;
         await this.plugin.saveSettings();
     };
 }
