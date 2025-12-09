@@ -31,7 +31,6 @@ export class Fullscreen extends Component {
 	onload(): void {
 		// 防抖函数初始化（100ms）
 		this.debouncedFullscreenChange = debounce(() => {
-			console.log("调用全屏修改方法");
 			this.handleFullscreenChange();
 		}, 100);
 		if (this.isFullscreen()) {

@@ -471,7 +471,6 @@ export class ReadingProgress extends Component {
 	}
 
 	onunload = () => {
-		console.log("调用了ReadingProgress的onunload方法");
 		this.clearContainerArray();
 	};
 }
