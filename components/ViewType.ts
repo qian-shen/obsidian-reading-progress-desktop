@@ -57,7 +57,7 @@ export class ViewType extends Component {
 		super();
 		this.plugin = plugin;
 		this.iconList.forEach((iconItem) => {
-			addIcon("type-" + iconItem.name, iconItem.svg);
+			addIcon("reading-progress-desktop-view-type-" + iconItem.name, iconItem.svg);
 		});
 		this.statusBarViewTypeEl = this.plugin.addStatusBarItem();
 		this.statusBarViewTypeEl.addClass("view-type");
@@ -76,7 +76,7 @@ export class ViewType extends Component {
 
 	updateViewType = (viewType: string) => {
 		setTooltip(this.iconSpanEl, viewType + " " + t("View"), { placement: "top" });
-		setIcon(this.iconSpanEl, "type-" + viewType);
+		setIcon(this.iconSpanEl, "reading-progress-desktop-view-type-" + viewType);
 	};
 
 	displayChange = (show: boolean) => {
@@ -93,7 +93,7 @@ export class ViewType extends Component {
 
 	onunload = () => {
 		this.iconList.forEach((iconItem) => {
-			removeIcon("type-" + iconItem.name);
+			removeIcon("reading-progress-desktop-view-type-" + iconItem.name);
 		});
 	};
 }

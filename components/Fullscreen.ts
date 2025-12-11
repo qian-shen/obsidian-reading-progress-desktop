@@ -63,8 +63,8 @@ export class Fullscreen extends Component {
 				this.statusBarToggleFullscreenButtonEl.removeClass("ban");
 			}
 		});
-		this.statusBarToggleFullscreenButtonEl.addEventListener("click", this.toggleFullscreen);
-		this.plugin.registerDomEvent(document, "fullscreenchange", this.debouncedFullscreenChange);
+		this.registerDomEvent(this.statusBarToggleFullscreenButtonEl, "click", this.toggleFullscreen)
+		this.registerDomEvent(document, "fullscreenchange", this.debouncedFullscreenChange);
 	}
 
 	// 请求全屏
@@ -165,7 +165,6 @@ export class Fullscreen extends Component {
 
 	// 清理资源
 	onunload = () => {
-		this.statusBarToggleFullscreenButtonEl.removeEventListener("click", this.toggleFullscreen);
 		this.callbacks.clear();
 	}
 }

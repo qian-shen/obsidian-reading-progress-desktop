@@ -78,19 +78,19 @@ export class ReadingProgress extends Component {
 			this.scrollChange();
 		}, 100);
 		this.plugin.app.workspace.onLayoutReady(this.scrollChange);
-		this.plugin.registerEvent(
+		this.registerEvent(
 			this.plugin.app.workspace.on(
 				"file-open",
 				this.debouncedScrollChange
 			)
 		);
-		this.plugin.registerEvent(
+		this.registerEvent(
 			this.plugin.app.workspace.on(
 				"active-leaf-change",
 				this.debouncedScrollChange
 			)
 		);
-		this.plugin.registerEvent(
+		this.registerEvent(
 			this.plugin.app.workspace.on("resize", this.debouncedScrollChange)
 		);
 	}
